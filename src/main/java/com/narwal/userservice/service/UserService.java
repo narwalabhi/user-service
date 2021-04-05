@@ -11,19 +11,23 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    public void createUser(User user){
-        userRepo.save(user);
-    }
-
-    public User updateUser(User user){
+    public User createUser(User user) {
         return userRepo.save(user);
     }
 
-    public void deleteUser(String email){
+    public void updateUser(String email, User user) {
+        User userData = userRepo.findByEmail(email);
+        if (userData != null) {
+            userRepo.save(user);
+        }
+        userRepo.save(user);
+    }
+
+    public void deleteUser(String email) {
         userRepo.deleteByEmail(email);
     }
 
-    public User searchUser(String email){
+    public User searchUser(String email) {
         return userRepo.findByEmail(email);
     }
 
