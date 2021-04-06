@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class RoleService {
 
     @Autowired
-    RoleRepo roleRepo;
+    private RoleRepo roleRepo;
 
     public Role createRole(Role role){
         return roleRepo.save(role);

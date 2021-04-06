@@ -21,8 +21,8 @@ public class User {
     @Id
     @Indexed
     private String email;
-    @Indexed(unique = true)
     private Date dob;
+    @Indexed(unique = true)
     private String mobileNumber;
     private String password;
     private String role;

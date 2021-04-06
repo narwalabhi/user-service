@@ -36,4 +36,9 @@ public class UserController {
         userService.deleteUser(email);
     }
 
+    @GetMapping("/get/{email}")
+    public User getUser(@PathVariable String email){
+        return userService.findUser(email);
+    }
+
 }
