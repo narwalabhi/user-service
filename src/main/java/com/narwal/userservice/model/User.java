@@ -16,9 +16,10 @@ import java.util.Date;
 @Getter
 @Setter
 public class User {
+    @Id
+    private String id;
     private String firstName;
     private String lastName;
-    @Id
     @Indexed
     private String email;
     private Date dob;

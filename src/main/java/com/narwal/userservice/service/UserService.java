@@ -5,6 +5,8 @@ import com.narwal.userservice.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -15,23 +17,29 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public void updateUser(String email, User user) {
-        User userData = userRepo.findByEmail(email);
-        if (userData != null) {
+    public Optional<User> updateUser(String id, User user) {
+        Optional<User> userData = userRepo.findById(id);
+        if (userData.isPresent()) {
+            user.setId(id);
             userRepo.save(user);
         }
-        userRepo.save(user);
+        return Optional.empty();
     }
 
-    public void deleteUser(String email) {
-        userRepo.deleteByEmail(email);
+    public Optional<User> deleteUser(String id) {
+        Optional<User> user = userRepo.findById(id);
+        if (user.isPresent()){
+            userRepo.deleteById(id);
+            return user;
+        }
+        return Optional.empty();
     }
 
-    public User searchUser(String email) {
-        return userRepo.findByEmail(email);
+    public Optional<User> findUserById(String id) {
+        return userRepo.findById(id);
     }
 
-    public User findUser(String email) {
+    public Optional<User> findUserByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 }
