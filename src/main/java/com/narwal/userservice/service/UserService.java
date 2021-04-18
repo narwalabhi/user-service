@@ -21,7 +21,7 @@ public class UserService {
         Optional<User> userData = userRepo.findById(id);
         if (userData.isPresent()) {
             user.setId(id);
-            userRepo.save(user);
+            return Optional.of(userRepo.save(user));
         }
         return Optional.empty();
     }

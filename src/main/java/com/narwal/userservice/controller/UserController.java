@@ -1,31 +1,33 @@
 package com.narwal.userservice.controller;
 
-import com.narwal.userservice.exception.ApiRequestException;
 import com.narwal.userservice.exception.UserNotFoundException;
 import com.narwal.userservice.model.User;
-import com.narwal.userservice.model.UserRequestBody;
-import com.narwal.userservice.service.RoleService;
 import com.narwal.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @Autowired
-    RoleService roleService;
+
+    @Bean
+    private BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @PostMapping("/signup")
     public User registerUser(@RequestBody User user) {
         System.out.println(user);
+        user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
         userService.createUser(user);
 //        roleService.createRole(user.getRole());
         return user;
@@ -50,6 +52,7 @@ public class UserController {
 
     @GetMapping("/get-by-email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        System.out.println("user");
         Optional<User> user = userService.findUserByEmail(email);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());

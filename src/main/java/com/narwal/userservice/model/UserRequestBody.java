@@ -15,7 +15,6 @@ import java.util.Date;
 public class UserRequestBody {
 
     private User user;
-    private Role role;
 
 }
 
