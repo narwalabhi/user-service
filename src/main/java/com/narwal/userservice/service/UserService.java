@@ -5,6 +5,7 @@ import com.narwal.userservice.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,17 +19,35 @@ public class UserService {
     }
 
     public Optional<User> updateUser(String id, User user) {
-        Optional<User> userData = userRepo.findById(id);
-        if (userData.isPresent()) {
-            user.setId(id);
-            return Optional.of(userRepo.save(user));
+        Optional<User> optionalUser = userRepo.findById(id);
+        if (optionalUser.isPresent()) {
+            User userData = optionalUser.get();
+            if (!user.getFirstName().equals("")) {
+                userData.setFirstName(user.getFirstName());
+            }
+            if (!user.getLastName().equals("")) {
+                userData.setLastName(user.getLastName());
+            }
+            if (!user.getEmail().equals("")) {
+                userData.setEmail(user.getEmail());
+            }
+            if (!user.getMobileNumber().equals("")) {
+                userData.setMobileNumber(user.getMobileNumber());
+            }
+            if(!user.getGender().equals("")){
+                userData.setGender(user.getGender());
+            }
+            if(user.getDob() != null){
+                userData.setDob(user.getDob());
+            }
+            return Optional.of(userRepo.save(userData));
         }
         return Optional.empty();
     }
 
     public Optional<User> deleteUser(String id) {
         Optional<User> user = userRepo.findById(id);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             userRepo.deleteById(id);
             return user;
         }
@@ -41,5 +60,9 @@ public class UserService {
 
     public Optional<User> findUserByEmail(String email) {
         return userRepo.findByEmail(email);
+    }
+
+    public List<User> getAll() {
+        return userRepo.findAll();
     }
 }
